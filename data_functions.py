@@ -10,7 +10,8 @@ def get_csse_data(value_name: str, min_cases: int, rolling_window: int) -> pd.Da
 
     df = pd.read_csv(f'{base_url}{path_dict[value_name]}')
     df = df.drop(['Lat', 'Long', 'Province/State'], axis=1)
-    df = df.rename(columns={'Country/Region': 'country'})
+    df = df.rename(columns={'Country/Region': 'country',
+                            '3/21/202': '3/21/20'})
     df_tidy = tidy_data(df, value_name=value_name, rolling_window=rolling_window)
     df_tidy_filtered = filter_tidy_data(df_tidy=df_tidy, min_cases=min_cases, value_name=value_name)
 
