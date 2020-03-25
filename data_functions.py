@@ -1,18 +1,14 @@
-import io
-
 import numpy as np
 import pandas as pd
-import requests
 
 
 def get_csse_data(value_name: str, min_cases: int, rolling_window: int) -> pd.DataFrame:
-    path_dict = {'cases':
-                     'data/COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
-                 'deaths':
-                     'data/COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv'
+    base_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/'
+    path_dict = {'cases': 'time_series_covid19_confirmed_global.csv',
+                 'deaths': 'time_series_covid19_deaths_global.csv'
                  }
 
-    df = pd.read_csv(path_dict[value_name])
+    df = pd.read_csv(f'{base_url}{path_dict[value_name]}')
     df = df.drop(['Lat', 'Long', 'Province/State'], axis=1)
     df = df.rename(columns={'Country/Region': 'country'})
     df_tidy = tidy_data(df, value_name=value_name, rolling_window=rolling_window)
