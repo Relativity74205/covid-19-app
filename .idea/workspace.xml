@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="302feff6-b966-4e78-bbb0-d7a39e5868b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_functions.py" afterDir="false" />
-    </list>
+    <list default="true" id="302feff6-b966-4e78-bbb0-d7a39e5868b9" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,7 +41,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1585088879337</updated>
-      <workItem from="1585088880637" duration="3441000" />
+      <workItem from="1585088880637" duration="4243000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <created>1585090953288</created>
@@ -82,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585091757767</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="changed link to data">
+      <created>1585129888242</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1585129888242</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -90,7 +93,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial" />
+    <MESSAGE value="changed link to data" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed link to data" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2610" y="358" width="583" height="397" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585090074827">
