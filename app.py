@@ -84,7 +84,7 @@ def main_odds_ratios():
 
 
 def main():
-    mode: str = st.sidebar.selectbox('App mode', ('Numbers', 'Odds'))
+    mode: str = st.sidebar.selectbox('App mode', ('Odds', 'Numbers'))
     pfunc.streamlit_max_width()
     if mode == 'Numbers':
         main_statistics()
