@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 
 import numpy as np
 import pandas as pd
@@ -11,14 +11,15 @@ def create_df_from_dict() -> pd.DataFrame:
     df = pd.DataFrame(d).transpose()
     df['estimate_lower_ci'] = df['estimate'] - 2 * df['se']
     df['estimate_upper_ci'] = df['estimate'] + 2 * df['se']
-    df['estimate_exp'] = np.exp(df['estimate'])
-    df['estimate_lower_ci_exp'] = np.exp(df['estimate_lower_ci'])
-    df['estimate_upper_ci_exp'] = np.exp(df['estimate_upper_ci'])
+    df['odds_ratio'] = np.exp(df['estimate'])
+    df['odds_ratio_lower_ci'] = np.exp(df['estimate_lower_ci'])
+    df['odds_ratio_upper_ci'] = np.exp(df['estimate_upper_ci'])
 
     return df
 
 
-def calc_odds_ratio(age: int, heart: bool, sofa: bool, lymphocyte: int, d_dimer: str):
+def calc_odds_ratio(age: int, heart: bool, sofa: bool, lymphocyte: int, d_dimer: str, add_intercept: bool)\
+        -> Tuple[float, float, float]:
     df: pd.DataFrame = create_df_from_dict()
     if d_dimer == 'bigger 0.5':
         df_dimer_middle = True
@@ -30,8 +31,6 @@ def calc_odds_ratio(age: int, heart: bool, sofa: bool, lymphocyte: int, d_dimer:
         df_dimer_middle = False
         df_dimer_high = False
 
-
-    add_intercept = False
     estimate = (df.loc['intercept', 'estimate'] * add_intercept +
                 age * df.loc['age', 'estimate'] +
                 heart * df.loc['heart', 'estimate'] +

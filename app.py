@@ -71,10 +71,16 @@ def main_odds_ratios():
     sofa: bool = st.sidebar.checkbox('SOFA score')
     lymphocyte: int = st.sidebar.number_input('Lymphocyte count (× 10 9 /L)', min_value=0, value=0)
     d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('smaller 0.5', 'bigger 0.5', 'bigger 1.0'))
-    odds_ratio, odds_ratio_lower_ci, odds_ratio_upper_ci = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer)
+    add_intercept: bool = st.sidebar.checkbox('add intercept')
+    odds_ratio, odds_ratio_lower_ci, odds_ratio_upper_ci = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer,
+                                                                               add_intercept)
 
     st.write(f'Estimated odds_ratio for the settings is {odds_ratio:.2f}, '
              f'CI ({odds_ratio_lower_ci:.2f}-{odds_ratio_upper_ci:.2f}).')
+
+    show_data = st.checkbox('Show used data')
+    if show_data:
+        st.dataframe(orf.create_df_from_dict())
 
 
 def main():
