@@ -68,7 +68,7 @@ def main_odds_ratios():
     st.sidebar.header('Choose parameters')
     age: int = st.sidebar.number_input('Age', min_value=0, value=20)
     heart: bool = st.sidebar.checkbox('Coronary heart diseases')
-    sofa: bool = st.sidebar.checkbox('SOFA score')
+    sofa: int = st.sidebar.number_input('SOFA score', min_value=0, value=0)
     lymphocyte: int = st.sidebar.number_input('Lymphocyte count (× 10 9 /L)', min_value=0, value=0)
     d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('smaller 0.5', 'bigger 0.5', 'bigger 1.0'))
     add_intercept: bool = st.sidebar.checkbox('add intercept')
@@ -76,7 +76,7 @@ def main_odds_ratios():
                                                                                add_intercept)
 
     st.write(f'Estimated odds_ratio for the settings is {odds_ratio:.2f}, '
-             f'CI ({odds_ratio_lower_ci:.2f}-{odds_ratio_upper_ci:.2f}).')
+             f'(CI {odds_ratio_lower_ci:.2f}-{odds_ratio_upper_ci:.2f}).')
 
     show_data = st.checkbox('Show used data')
     if show_data:

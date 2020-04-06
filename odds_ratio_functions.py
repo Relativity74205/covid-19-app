@@ -18,7 +18,7 @@ def create_df_from_dict() -> pd.DataFrame:
     return df
 
 
-def calc_odds_ratio(age: int, heart: bool, sofa: bool, lymphocyte: int, d_dimer: str, add_intercept: bool)\
+def calc_odds_ratio(age: int, heart: bool, sofa: int, lymphocyte: int, d_dimer: str, add_intercept: bool)\
         -> Tuple[float, float, float]:
     df: pd.DataFrame = create_df_from_dict()
     if d_dimer == 'bigger 0.5':
