@@ -13,11 +13,15 @@ def plot(df: pd.DataFrame, base_metric: str, flag_delta: bool, rolling_window: i
 
     if flag_delta:
         subfig1 = px.line(df, x='date', y=f'delta_{base_metric}', color='country')
+        subfig2 = px.line(df, x='date', y=f'factor_delta_increase_{base_metric}_smoothed', color='country',
+                          hover_data=[base_metric, f'delta_{base_metric}'])
     else:
         subfig1 = px.line(df, x='date', y=base_metric, color='country')
+        subfig2 = px.line(df, x='date', y=f'factor_{base_metric}_increase_smoothed', color='country',
+                          hover_data=[base_metric, f'delta_{base_metric}'])
 
-    subfig2 = px.line(df, x='date', y=f'factor_{base_metric}_increase_smoothed', color='country',
-                      hover_data=[base_metric, f'delta_{base_metric}'])
+    # subfig2 = px.line(df, x='date', y=f'factor_{base_metric}_increase_smoothed', color='country',
+    #                   hover_data=[base_metric, f'delta_{base_metric}'])
 
     amount_countries = len(df.country.unique().tolist())
 
@@ -69,14 +73,15 @@ def main_odds_ratios():
     age: int = st.sidebar.number_input('Age', min_value=0, value=20)
     heart: bool = st.sidebar.checkbox('Coronary heart diseases')
     sofa: int = st.sidebar.number_input('SOFA score', min_value=0, value=0)
-    lymphocyte: int = st.sidebar.number_input('Lymphocyte count (× 10 9 /L)', min_value=0, value=0)
-    d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('smaller 0.5', 'bigger 0.5', 'bigger 1.0'))
-    add_intercept: bool = st.sidebar.checkbox('add intercept')
-    odds_ratio, odds_ratio_lower_ci, odds_ratio_upper_ci = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer,
+    lymphocyte: int = st.sidebar.number_input('Lymphocyte count (10^9/L)', min_value=0, value=0)
+    d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('<=0.5', '>0.5', '>1.0'))
+    add_intercept: bool = st.sidebar.checkbox('add intercept', value=True)
+    odds_ratio, odds_ratio_lower_ci, odds_ratio_upper_ci, p = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer,
                                                                                add_intercept)
 
     st.write(f'Estimated odds_ratio for the settings is {odds_ratio:.2f}, '
-             f'(CI {odds_ratio_lower_ci:.2f}-{odds_ratio_upper_ci:.2f}).')
+             f'(CI {odds_ratio_lower_ci:.2f}-{odds_ratio_upper_ci:.2f});'
+             f'{p=:.4f}.')
 
     show_data = st.checkbox('Show used data')
     if show_data:

@@ -21,10 +21,10 @@ def create_df_from_dict() -> pd.DataFrame:
 def calc_odds_ratio(age: int, heart: bool, sofa: int, lymphocyte: int, d_dimer: str, add_intercept: bool)\
         -> Tuple[float, float, float]:
     df: pd.DataFrame = create_df_from_dict()
-    if d_dimer == 'bigger 0.5':
+    if d_dimer == '>0.5':
         df_dimer_middle = True
         df_dimer_high = False
-    elif d_dimer == 'bigger 1.0':
+    elif d_dimer == '>1.0':
         df_dimer_middle = False
         df_dimer_high = True
     else:
@@ -58,4 +58,6 @@ def calc_odds_ratio(age: int, heart: bool, sofa: int, lymphocyte: int, d_dimer: 
                          df_dimer_high * df.loc['d_dimer_high', 'estimate_upper_ci']
                          )
 
-    return np.exp(estimate), np.exp(estimate_lower_ci), np.exp(estimate_upper_ci)
+    p = 1 / (1 + np.exp(-estimate))
+
+    return np.exp(estimate), np.exp(estimate_lower_ci), np.exp(estimate_upper_ci), p
