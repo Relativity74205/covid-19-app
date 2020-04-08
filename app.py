@@ -78,18 +78,24 @@ def main_odds_ratios():
     d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('0', '1', '2'),
                                         format_func=lambda x: d_dimer_display_values[int(x)])
     # add_intercept: bool = st.sidebar.checkbox('add intercept', value=True)
+
     add_intercept: bool = True
     odds = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer, add_intercept)
-    odds_ref = orf.calc_odds_ratio(age=0, heart=False, sofa=0, lymphocyte=0, d_dimer='>0.5', add_intercept=add_intercept)
+    odds_ref = orf.calc_odds_ratio(age=0, heart=False, sofa=0, lymphocyte=0, d_dimer='0', add_intercept=add_intercept)
 
     st.subheader('Estimated odds_ratio/odds for the settings are:')
-    st.write(f'Odds_ratio: {odds.odds / odds_ref.odds:.2f}, '
-             f'(CI {odds.odds_lower_ci / odds_ref.odds_lower_ci:.2f}-{(odds.odds_upper_ci / odds_ref.odds_upper_ci):.2f}); '
-             f'p={odds.p/odds_ref.p:.4f}.')
-
     st.write(f'Odds: {odds.odds:.2f}, '
              f'(CI {odds.odds_lower_ci:.2f}-{odds.odds_upper_ci:.2f}); '
              f'p={odds.p:.4f}.')
+    st.write('\n')
+    st.write(f'Odds_ratio: {odds.odds / odds_ref.odds:.2f}, '
+             f'(CI {odds.odds_lower_ci / odds_ref.odds_lower_ci:.2f}-{(odds.odds_upper_ci / odds_ref.odds_upper_ci):.2f}); '
+             f'p={odds.p/odds_ref.p:.4f}.')
+    st.text('Reference patient has age=0, Coronary heart diseases=False, SOFA score=0, Lymphocyte count=0, '
+            'D-dimer<=0.5')
+    st.write('\n')
+    st.write('\n')
+
     # st.write(f'Estimated odds for reference is {odds_ref.odds:.2f}, '
     #          f'(CI {odds_ref.odds_lower_ci:.2f}-{odds_ref.odds_upper_ci:.2f});'
     #          f'{odds_ref.p=:.4f}.')
