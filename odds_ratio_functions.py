@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 import config_odds_ratio
+from Odds import Odds
 
 
 def create_df_from_dict() -> pd.DataFrame:
@@ -18,13 +19,15 @@ def create_df_from_dict() -> pd.DataFrame:
     return df
 
 
-def calc_odds_ratio(age: int, heart: bool, sofa: int, lymphocyte: int, d_dimer: str, add_intercept: bool)\
-        -> Tuple[float, float, float]:
+def calc_odds_ratio(age: int, heart: bool, sofa: int, lymphocyte: float, d_dimer: str, add_intercept: bool) -> Odds:
     df: pd.DataFrame = create_df_from_dict()
-    if d_dimer == '>0.5':
+    if d_dimer == '0':
+        df_dimer_middle = False
+        df_dimer_high = False
+    elif d_dimer == '1':
         df_dimer_middle = True
         df_dimer_high = False
-    elif d_dimer == '>1.0':
+    elif d_dimer == '2':
         df_dimer_middle = False
         df_dimer_high = True
     else:
@@ -58,6 +61,12 @@ def calc_odds_ratio(age: int, heart: bool, sofa: int, lymphocyte: int, d_dimer: 
                          df_dimer_high * df.loc['d_dimer_high', 'estimate_upper_ci']
                          )
 
-    p = 1 / (1 + np.exp(-estimate))
+    odds = Odds(estimate=estimate,
+                estimate_lower_ci=estimate_lower_ci,
+                estimate_upper_ci=estimate_upper_ci,
+                odds=np.exp(estimate),
+                odds_lower_ci=np.exp(estimate_lower_ci),
+                odds_upper_ci=np.exp(estimate_upper_ci),
+                p=1 / (1 + np.exp(-estimate)))
 
-    return np.exp(estimate), np.exp(estimate_lower_ci), np.exp(estimate_upper_ci), p
+    return odds

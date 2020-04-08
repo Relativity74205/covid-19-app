@@ -73,15 +73,26 @@ def main_odds_ratios():
     age: int = st.sidebar.number_input('Age', min_value=0, value=20)
     heart: bool = st.sidebar.checkbox('Coronary heart diseases')
     sofa: int = st.sidebar.number_input('SOFA score', min_value=0, value=0)
-    lymphocyte: int = st.sidebar.number_input('Lymphocyte count (10^9/L)', min_value=0, value=0)
-    d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('<=0.5', '>0.5', '>1.0'))
-    add_intercept: bool = st.sidebar.checkbox('add intercept', value=True)
-    odds_ratio, odds_ratio_lower_ci, odds_ratio_upper_ci, p = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer,
-                                                                               add_intercept)
+    lymphocyte: float = st.sidebar.number_input('Lymphocyte count (10^9/L)', min_value=0.0, value=0.0, step=0.01)
+    d_dimer_display_values = ('<=0.5', '>0.5', '>1.0')
+    d_dimer: str = st.sidebar.selectbox('D-dimer (microgramm/L)', ('0', '1', '2'),
+                                        format_func=lambda x: d_dimer_display_values[int(x)])
+    # add_intercept: bool = st.sidebar.checkbox('add intercept', value=True)
+    add_intercept: bool = True
+    odds = orf.calc_odds_ratio(age, heart, sofa, lymphocyte, d_dimer, add_intercept)
+    odds_ref = orf.calc_odds_ratio(age=0, heart=False, sofa=0, lymphocyte=0, d_dimer='>0.5', add_intercept=add_intercept)
 
-    st.write(f'Estimated odds_ratio for the settings is {odds_ratio:.2f}, '
-             f'(CI {odds_ratio_lower_ci:.2f}-{odds_ratio_upper_ci:.2f});'
-             f'{p=:.4f}.')
+    st.subheader('Estimated odds_ratio/odds for the settings are:')
+    st.write(f'Odds_ratio: {odds.odds / odds_ref.odds:.2f}, '
+             f'(CI {odds.odds_lower_ci / odds_ref.odds_lower_ci:.2f}-{(odds.odds_upper_ci / odds_ref.odds_upper_ci):.2f}); '
+             f'p={odds.p/odds_ref.p:.4f}.')
+
+    st.write(f'Odds: {odds.odds:.2f}, '
+             f'(CI {odds.odds_lower_ci:.2f}-{odds.odds_upper_ci:.2f}); '
+             f'p={odds.p:.4f}.')
+    # st.write(f'Estimated odds for reference is {odds_ref.odds:.2f}, '
+    #          f'(CI {odds_ref.odds_lower_ci:.2f}-{odds_ref.odds_upper_ci:.2f});'
+    #          f'{odds_ref.p=:.4f}.')
 
     show_data = st.checkbox('Show used data')
     if show_data:
